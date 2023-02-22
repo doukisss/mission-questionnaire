@@ -101,9 +101,11 @@ class Questionnaire:
         return score
 
 
-files=glob.glob("dossier_json/*")
+# files=glob.glob("dossier_json/*")
 # for i in range(0, len(files)):
-fichier = files[0]
+# files = "animaux_leschats_expert.json"
+files = os.listdir('.')
+fichier = files[2]
 file = open(fichier, "r")
 json_data = file.read()
 file.close()
