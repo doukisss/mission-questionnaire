@@ -24,6 +24,7 @@ import json
 import os
 import os, fnmatch
 import glob
+import sys
 # from questionnaire import bonne_reponse
 
 
@@ -79,9 +80,23 @@ class Questionnaire:
         self.titre = titre
         self.categorie = categorie
         self.difficulte = difficulte
+    
+    def from_json_file(file_name):
+        #file_name = os.listdir('.')
+        #fichier = file_name[2]
+        try:
+            file = open(file_name, "r")
+            json_data = file.read()
+            file.close()
+            questionnaire_data = json.loads(json_data)
+        except:
+            print("Exception lors de l'ouverture de la lecture du fichier")
+            return None
+        return Questionnaire.from_data_json(questionnaire_data)
+        
         
     def from_data_json(data):
-        questionnaire_data_questions = questionnaire_data["questions"]
+        questionnaire_data_questions = data["questions"]
         questions = [Question.from_data_json(i) for i in questionnaire_data_questions]
         return Questionnaire(questions, data["titre"], data["categorie"], data["difficulte"])
         
@@ -93,7 +108,7 @@ class Questionnaire:
         print("Catégore:", self.categorie)
         print("Difficulté:", self.difficulte)
         print("Nombre de question:", str(self.nb_question))
-        print("-----------------")
+        print("--------------------")
         
         score = 0
         for i in range(self.nb_question):
@@ -108,15 +123,14 @@ class Questionnaire:
 # files=glob.glob("dossier_json/*")
 # for i in range(0, len(files)):
 # files = "animaux_leschats_expert.json"
-files = os.listdir('.')
-fichier = files[2]
-file = open(fichier, "r")
-json_data = file.read()
-file.close()
 
-questionnaire_data = json.loads(json_data)
+print(sys.argv)
 
-# q = Question.FromJsonData(questionnaire_data_questions[0])
-# q.poser()
-Questionnaire.from_data_json(questionnaire_data).lancer()
-print()
+if len(sys.argv) < 2:
+    print("Vous devez entrer le nom d'un fichier au format json")
+    exit(0)
+json_filename = sys.argv[1]
+questionnaire = Questionnaire.from_json_file(json_filename)
+if questionnaire:
+    questionnaire.lancer()
+    
