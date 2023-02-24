@@ -98,6 +98,16 @@ class Questionnaire:
         
         
     def from_data_json(data):
+        if not data.get("categorie"):
+            data["categorie"] = "Inconnu"
+        if not data.get("difficulte"):
+            data["difficulte"] = "Inconnu"
+        if not data.get("titre"):
+            return
+        if not data.get("questions"):
+            return
+        
+            
         questionnaire_data_questions = data["questions"]
         questions = [Question.from_data_json(i) for i in questionnaire_data_questions]
         # supprime les questions None (qui n'ont pas pu être créé)
@@ -128,13 +138,16 @@ class Questionnaire:
 # for i in range(0, len(files)):
 # files = "animaux_leschats_expert.json"
 
-print(sys.argv)
+if __name__ == "__main__":
 
-if len(sys.argv) < 2:
-    print("Vous devez entrer le nom d'un fichier au format json")
-    exit(0)
-json_filename = sys.argv[1]
-questionnaire = Questionnaire.from_json_file(json_filename)
-if questionnaire:
-    questionnaire.lancer()
-    
+    print(sys.argv)
+
+    if len(sys.argv) < 2:
+        print("Vous devez entrer le nom d'un fichier au format json")
+        exit(0)
+    json_filename = sys.argv[1]
+    questionnaire = Questionnaire.from_json_file(json_filename)
+    if questionnaire:
+        questionnaire.lancer()
+
+        

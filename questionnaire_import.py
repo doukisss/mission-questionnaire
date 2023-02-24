@@ -1,5 +1,4 @@
 import os
-
 import requests
 import json
 import unicodedata
@@ -56,10 +55,11 @@ def generate_json_file(categorie, titre, url):
             print(f"Exception dans la déserialisation ou l'utilisation des données (questionnaire : {titre}, url: {url})")
 
 
-for quizz_data in open_quizz_db_data:
-    generate_json_file(quizz_data[0], quizz_data[1], quizz_data[2])
-json_files = [file for file in os.listdir('.') if os.path.isfile(os.path.join('.',file))]
-print(json_files)
+if __name__ == "__main__":
+    for quizz_data in open_quizz_db_data:
+        generate_json_file(quizz_data[0], quizz_data[1], quizz_data[2])
+    json_files = [file for file in os.listdir('.') if os.path.isfile(os.path.join('.',file))]
+    print(json_files)
 
 
     
